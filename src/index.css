@@ -1,0 +1,173 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --paper: #FFFAF5;
+    --ink: #3A3454;
+    --ink-muted: #5C547A;
+    --surface: #FFF4EA;
+    --border-hairline: rgba(58, 52, 84, 0.14);
+
+    /* Tool 1: Waffle (Peach) */
+    --waffle-panel: #FFDCCB;
+    --waffle-panel-hover: #FFCBB2;
+    --waffle-line: #D9694A;
+    --waffle-fill: #F6AD90;
+
+    /* Tool 2: Bars (Mint) */
+    --bars-panel: #CFEBDD;
+    --bars-panel-hover: #B8E1CD;
+    --bars-line: #3B9576;
+    --bars-fill: #9CD5BC;
+
+    /* Tool 3: Sankey (Lavender) */
+    --sankey-panel: #DDD5F3;
+    --sankey-panel-hover: #CCBFEA;
+    --sankey-line: #7260B6;
+    --sankey-fill: #C0B1E7;
+  }
+
+  .dark {
+    --paper: #1F1C2B;
+    --ink: #F7F1EB;
+    --ink-muted: #C9C1DC;
+    --surface: #282438;
+    --border-hairline: rgba(247, 241, 235, 0.15);
+
+    /* Tool 1: Waffle (Muted Dark Peach + Light Pastel Line) */
+    --waffle-panel: #392826;
+    --waffle-panel-hover: #46312E;
+    --waffle-line: #FFB499;
+    --waffle-fill: #6B4239;
+
+    /* Tool 2: Bars (Muted Dark Mint + Light Pastel Line) */
+    --bars-panel: #22352F;
+    --bars-panel-hover: #2A423B;
+    --bars-line: #8CE0BF;
+    --bars-fill: #34584C;
+
+    /* Tool 3: Sankey (Muted Dark Lavender + Light Pastel Line) */
+    --sankey-panel: #2E2744;
+    --sankey-panel-hover: #383054;
+    --sankey-line: #C4B5FD;
+    --sankey-fill: #4A3E73;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: "Figtree", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 220ms ease, color 220ms ease;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: "Fraunces", Georgia, serif;
+    font-variation-settings: "SOFT" 100, "WONK" 1;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .draw-stroke {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition:
+      stroke-dashoffset var(--draw-duration, 850ms) cubic-bezier(0.22, 1, 0.36, 1) var(--draw-delay, 0ms),
+      stroke-width 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 400ms ease var(--draw-delay, 0ms);
+  }
+
+  .is-drawn .draw-stroke {
+    stroke-dashoffset: 0;
+  }
+
+  .fill-reveal {
+    opacity: 0;
+    transition:
+      opacity 420ms ease var(--fill-delay, 320ms),
+      fill 240ms ease;
+  }
+
+  .is-drawn .fill-reveal {
+    opacity: 1;
+  }
+
+  .spring-chip {
+    transition:
+      transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      background-color 200ms ease,
+      border-color 200ms ease,
+      box-shadow 200ms ease;
+  }
+
+  .spring-chip:hover {
+    transform: translateY(-2px) rotate(-1.5deg) scale(1.04);
+  }
+
+  .spring-panel {
+    transition:
+      transform 340ms cubic-bezier(0.34, 1.56, 0.64, 1),
+      background-color 220ms ease;
+  }
+
+  .spring-panel:hover {
+    transform: rotate(-1deg) scale(1.015);
+  }
+
+  .spring-panel-alt:hover {
+    transform: rotate(1deg) scale(1.015);
+  }
+
+  .spring-panel:hover .hover-thicken {
+    stroke-width: 2.9;
+  }
+
+  .spring-panel:hover .hover-thicken-thin {
+    stroke-width: 2.05;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  body,
+  .draw-stroke,
+  .fill-reveal,
+  .spring-chip,
+  .spring-panel {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .draw-stroke {
+    stroke-dashoffset: 0 !important;
+  }
+
+  .fill-reveal {
+    opacity: 1 !important;
+  }
+
+  .spring-chip:hover,
+  .spring-panel:hover,
+  .spring-panel-alt:hover {
+    transform: none !important;
+  }
+}
